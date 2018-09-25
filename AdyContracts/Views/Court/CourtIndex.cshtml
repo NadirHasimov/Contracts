@@ -1,0 +1,125 @@
+﻿@model AdyContracts.Models.CourtViewModel
+@using AdyContracts.Resources
+
+@{
+    ViewBag.Title = "CourtIndex";
+}
+
+@section Styles{
+    <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/select2-bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/select2.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/courtIndex.css" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
+    <script src="~/Scripts/custom/courtIndex.js"></script>
+    <script src="~/Scripts/theme/bootstrap-datetimepicker.js"></script>
+    <script src="~/Scripts/theme/locales/bootstrap-datetimepicker.az.js"></script>
+    <script src="~/Scripts/theme/select2.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(".test").datetimepicker({
+            format: "dd-MM-yyyy hh:ii",
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "bottom-left"
+        });
+        $('#select-user').select2({
+            placeholder: "--İstifadəçini seç--",
+            allowClear: true
+        });
+    </script>
+}
+<div class="row">
+    <button type="button" class="btn btn-info btn-icon icon-left pull-right" onclick="$('#trial-modal').appendTo('body').modal('show')" id="btn_add">
+        <i class="entypo-plus-circled"></i>
+        @ResourceCourt.addBtn
+    </button>
+</div>
+<div class="row table-container">
+    <div class="panel panel-default" data-collapsed="false">
+        <div class="panel-heading">
+            <div class="panel-title">
+                @ResourceCourt.court
+            </div>
+            <div class="panel-options">
+                <a href="#" id="reload-attachments">
+                    <i class="entypo-arrows-ccw"></i>
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            @Html.Partial("_TrialList", Model.CourtList)
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="trial-modal">
+    <div class="modal-dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        x
+                    </button>
+                    <h4>@ResourceCourt.createCourt</h4>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("CreateTrial", "Court", FormMethod.Post))
+                    {
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="control-label">@ResourceCourt.firstLastName</label>
+                                    @Html.DropDownListFor(model => model.userId, (IEnumerable<SelectListItem>)ViewBag.UserList, "", new { @class = "form-control",@id="select-user" })
+                                    @Html.ValidationMessageFor(model => model.userId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label class="control-label">@ResourceCourt.clock</label>
+                                    <div class="input-group date test">
+                                        @Html.TextBoxFor(m => m.time, new { @class = "form-control", @value = "", @size = "16", @readonly = true })
+                                        @*<input type="text" class="form-control" name="time" value="" readonly size="16">*@
+                                        <span class="input-group-addon"><i class="entypo-calendar"></i></span>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.time, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="control-label">@ResourceCourt.address</label>
+                                    @Html.TextAreaFor(model => model.location, new { @class = "form-control autogrow", @rows = 3, @id = "location" })
+                                    @Html.ValidationMessageFor(model => model.location, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row" style="margin-top:20px;">
+                                <div class="pull-left">
+                                    <button type="submit" class="btn btn-green btn-icon" style="margin-left:50px;">
+                                        <i class="entypo-pencil"></i>
+                                       @ResourceAdmin.create   
+                                    </button>
+                                </div>
+
+                                <div class="pull-right">
+                                    <button class="btn btn-default" style="margin-right:50px;" data-dismiss="modal">
+                                        @ResourceAdmin.close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

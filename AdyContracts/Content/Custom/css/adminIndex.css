@@ -1,0 +1,85 @@
+﻿/*.table-container .panel .table > thead > tr > th:last-child,
+.table-container .panel .table > tbody > tr > td:last-child {
+    text-align: center;
+}*/
+
+input[type=checkbox] {
+    font-size: medium;
+}
+
+label {
+    margin: 0 !important;
+}
+
+.table-container {
+    margin: 20px;
+}
+
+.btn {
+    margin: 20px;
+    margin-bottom: 0;
+}
+
+table.dataTable tbody th, table.dataTable tbody td {
+    font-size: 14px;
+}
+
+#lbl_sendMailStatus {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#emailSendStatus {
+    font-size: 14px;
+    margin: 0;
+}
+
+#tbl_menu > caption + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > th,
+.table > thead:first-child > tr:first-child > th,
+.table > caption + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > td,
+.table > thead:first-child > tr:first-child > td {
+    font-weight: bold;
+}
+/*#scroll_table {
+    height: 400px;
+    overflow: auto;
+    margin-top: 20px;
+}
+#table-wrapper {
+    position: relative;
+}
+    #table-wrapper table {
+        width: 100%;
+    }*/
+
+
+#header {
+    background-color: #386fa7;
+    color: white;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 3px;
+
+}
+
+.attch {
+    margin: 10px;
+}
+
+#UserType {
+    margin-top: 10px;
+    margin-left:5px;
+    background-color: #386fa7;
+    color: white;
+    font-size: 14px;
+    border: 1px solid #b1b4a4;
+    width:auto;
+}
+#menu1 {
+    margin: 0;
+    margin-top:10px;
+    margin-right:5px;
+}

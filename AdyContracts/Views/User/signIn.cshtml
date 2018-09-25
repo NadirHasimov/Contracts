@@ -1,0 +1,66 @@
+﻿@using AdyContracts.Resources
+@model AdyContracts.Models.UserViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="~/Content/Theme/css/neon-forms.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/LoginPage.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/common.css" rel="stylesheet" />
+
+    <link href="~/Content/Theme/css/select2-bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/select2.css" rel="stylesheet" />
+    <link href="~/Content/theme/font-icons/entypo/css/entypo.css" rel="stylesheet" />
+
+    <script src="~/Scripts/theme/jquery-1.11.3.min.js"></script>
+
+    <script src="~/Scripts/theme/jquery.validate.min.js"></script>
+    <script src="~/Scripts/theme/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/theme/jquery-ui/jquery-ui.min.js"></script>
+</head>
+<body class="page-body">
+    <div class="page-container">
+        <div class="col-sm-4 col-sm-offset-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        @Resource.loginTitle
+                    </div>
+                </div>
+                <div class="panel-body">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="form-group">
+                            @*<label class="control-label">@Model.username</label>*@
+                            @Html.LabelFor(m => m.username, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.username, new { @class = "form-control", @placeholder = "user123", @id = "usernameID" })
+                            @Html.ValidationMessageFor(m => m.username)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.password, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.password, new { @class = "form-control", @type = "password", @placeholder = "Parol" })
+                            @Html.ValidationMessageFor(m => m.password)
+                            <span class="error-text" style="color:red"><br />@ViewBag.InfoMessage</span>
+                        </div>
+                        <button class="btn btn-primary pull-right" type="submit">@Resource.btnLogin</button>
+                    }
+                    <button class="btn btn-success pull-left" id="modalID" data-target="#signUpModal" data-toggle="modal">@Resource.btnRegister</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_SignUp", Model)
+    <script src="~/Scripts/theme/bootstrap.min.js"></script>
+    <script src="~/Scripts/theme/toastr.js"></script>
+    <script src="~/Scripts/theme/jquery.cookie.js"></script>
+    <script src="~/Scripts/custom/common.js"></script>
+    <script src="~/Scripts/theme/select2.min.js"></script>
+    <script src="~/Scripts/custom/user.js"></script>
+</body>
+</html>

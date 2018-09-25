@@ -1,0 +1,554 @@
+﻿@model AdyContracts.Models.DocumentViewModel
+@using AdyContracts.Resources
+
+@{
+    ViewBag.Title = "Upload";
+}
+@section Styles{
+    <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/upload.css?v=06" rel="stylesheet" />
+    <link href="~/Content/Selectize/css/selectize.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
+    <script src="~/Content/Selectize/js/standalone/selectize.js"></script>
+    <script src="~/Scripts/custom/upload.js"></script>
+}
+<div class="header">
+</div>
+<div class="row table-container" id="file-table">
+    <div class="panel panel-default" data-collapsed="false">
+        <div class="panel-heading">
+            <div class="panel-title">
+                @ResourceUpload.docs
+            </div>
+            <div class="panel-options">
+                <div class="dropdown pull-right" id="operations" style="margin-top:10px;">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                        @ResourceUpload.operations
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation">
+                            <a href="javascript:;" onclick="$('#modal-comp').appendTo('body').modal('show')" class="">
+                                <i class="entypo-upload"></i>
+                                @ResourceUpload.contract
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="javascript:;" onclick="$('#modal_comp_word').appendTo('body').modal('show')" class="">
+                                <i class="entypo-upload"></i>
+                                @ResourceUpload.contractWord
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="javascript:;" onclick="$('#modal-order').appendTo('body').modal('show');" class="" id="btn-comp">
+                                <i class="entypo-upload"></i>
+                                @ResourceUpload.injuction
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="javascript:;" onclick="$('#modal-s_order').appendTo('body').modal('show');" class="" id="btn-comp">
+                                <i class="entypo-upload"></i>
+                                @ResourceUpload.order
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="javascript:;" onclick="$('#modal-i_order').appendTo('body').modal('show');" class="" id="btn-comp">
+                                <i class="entypo-upload"></i>
+                                @ResourceUpload.managementBoard
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div class="panel-body">
+            @Html.Partial("_documentList")
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-comp" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    x
+                </button>
+                <h3 class="modal-title">@ResourceUpload.contract (PDF)</h3>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.docNumber</label>
+                                @Html.EditorFor(model => model.id, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.govRegNumber</label>
+                                @Html.EditorFor(model => model.govRegNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.govRegNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.receiver</label>
+                                @Html.DropDownListFor(m => m.ReceivingAuthorityId, (IEnumerable<SelectListItem>)ViewBag.ReceivingAuthorities, "", new { @class = "receiver", @id = "receiver1" })
+                                @Html.ValidationMessageFor(m => m.ReceivingAuthorityId)
+                            </div>
+                            <input type="text" name="type" value="3" class="hidden" />
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.regDate</label>
+                                @Html.EditorFor(model => model.registrationDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                @Html.ValidationMessageFor(model => model.registrationDate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.terminatedContract</label>
+                                @Html.DropDownListFor(m => m.terminationContract, (IEnumerable<SelectListItem>)ViewBag.SelectListItems, "", new { @class = "selectize-dropdownn", @id = "termination_contract" })
+                                @Html.ValidationMessageFor(m => m.terminationContract)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">@ResourceUpload.note</label>
+                                @Html.TextAreaFor(model => model.description, new { @class = "form-control autogrow", @rows = 3, @id = "desc" })
+                                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">@ResourceUpload.file</label>
+                                <input type="file" name="file" class="form-control" data-val="true" data-val-required="Select a file" />
+                                @Html.ValidationMessageFor(m => m.file)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="pull-left">
+                                <button type="submit" class="btn btn-green btn-icon" style="margin-left:50px;">
+                                    <i class="entypo-upload"></i>
+                                    @ResourceUpload.download
+                                </button>
+                            </div>
+
+                            <div class="pull-right">
+                                <button class="btn btn-default" style="margin-right:50px;" data-dismiss="modal">
+                                    @ResourceUpload.exit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ------------------------------------------------ *@
+<div class="modal fade" id="modal_comp_word" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    x
+                </button>
+                <h3 class="modal-title">@ResourceUpload.contract (Word & PDf)</h3>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("UploadWordDocument", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.docNumber</label>
+                                @Html.EditorFor(model => model.id, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.govRegNumber</label>
+                                @Html.EditorFor(model => model.govRegNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.govRegNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.receiver</label>
+                                @Html.DropDownListFor(m => m.ReceivingAuthorityId, (IEnumerable<SelectListItem>)ViewBag.ReceivingAuthorities, "", new { @class = "receiver", @id = "receiver3" })
+                                @Html.ValidationMessageFor(m => m.ReceivingAuthorityId)
+                            </div>
+                            <input type="text" name="type" value="3" class="hidden" />
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.regDate</label>
+                                @Html.EditorFor(model => model.registrationDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                @Html.ValidationMessageFor(model => model.registrationDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">@ResourceUpload.note</label>
+                                @Html.TextAreaFor(model => model.description, new { @class = "form-control autogrow", @rows = 3, @id = "desc" })
+                                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">@ResourceUpload.wordFile</label>
+                                <input type="file" name="file" class="form-control" data-val="true" data-val-required="Select a file" />
+                                @Html.ValidationMessageFor(m => m.file)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">@ResourceUpload.pdfFile</label>
+                                <input type="file" name="pdfFile" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="pull-left">
+                                <button type="submit" class="btn btn-green btn-icon" style="margin-left:50px;">
+                                    <i class="entypo-upload"></i>
+                                    @ResourceUpload.download
+                                </button>
+                            </div>
+
+                            <div class="pull-right">
+                                <button class="btn btn-default" style="margin-right:50px;" data-dismiss="modal">
+                                    @ResourceUpload.exit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ------------------------------Emr------------------------------------------- *@
+<div class="modal fade custom-width" id="modal-order" tabindex="-1">
+    <div class="modal-dialog" style="width: 60%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    x
+                </button>
+                <h3 class="modal-title">@ResourceUpload.injuction</h3>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("UploadOrderDocument", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.docNumber</label>
+                                @Html.EditorFor(model => model.id, new { htmlAttributes = new { @class = "form-control", @id = "docNum" } })
+                                @Html.ValidationMessageFor(model => model.id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.effectiveDate</label>
+                                @Html.EditorFor(model => model.effectiveDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                @Html.ValidationMessageFor(model => model.effectiveDate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.regDate</label>
+                                @Html.EditorFor(model => model.registrationDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                @Html.ValidationMessageFor(model => model.registrationDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.receiver</label>
+                                @Html.DropDownListFor(m => m.ReceivingAuthorityId, (IEnumerable<SelectListItem>)ViewBag.ReceivingAuthorities, "", new { @class = "receiver", @id = "receiver4" })
+                                @Html.ValidationMessageFor(m => m.ReceivingAuthorityId)
+                            </div>
+                            <div class="col-md-3" style="margin-top:25px;">
+                                <label class="lbl_termination" id="lbl_termination">@ResourceUpload.terminatedOrder   <input type="checkbox" class="" id="ck_termination" name="terminationStatus" value="true" /></label>
+                            </div>
+                            <div class="col-md-4" style="margin-top:25px;">
+                                <label class="lbl_termination" id="lbl_chng">@ResourceUpload.modifiedCandCommands <input type="checkbox" class="" id="ck_chng" /></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6" id="div_termination_order">
+                            </div>
+                            <div class="col-md-6" id="div_termination_type">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6" id="chngd_field">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12" id="paragraphs_text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">@ResourceUpload.note</label>
+                                @Html.TextAreaFor(model => model.description, new { @class = "form-control autogrow", @rows = 3, @id = "desc" })
+                                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.wordFile</label>
+                                <input type="file" name="file" accept=" application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="form-control" data-val="true" data-val-required="Zəhmət olmazsa, faylı daxil edin." />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.pdfFile</label>
+                                <input type="file" name="pdfFile" class="form-control" accept="application/pdf" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="pull-left">
+                                <button type="submit" class="btn btn-green btn-icon" style="margin-left:50px;">
+                                    <i class="entypo-upload"></i>
+                                    @ResourceUpload.download
+                                </button>
+                            </div>
+                            <div class="pull-right">
+                                <button class="btn btn-default" style="margin-right:50px;" data-dismiss="modal">
+                                    @ResourceUpload.exit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ------------------Sərəncam------------------ *@
+
+<div class="modal fade custom-width" id="modal-s_order" tabindex="-1">
+    <div class="modal-dialog" style="width: 60%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    x
+                </button>
+                <h3 class="modal-title">@ResourceUpload.order</h3>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("UploadOrderDocument", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <input type="text" hidden value="4" name="type" />
+                    @*@Html.HiddenFor(m => m.type, new { @value = "4" })*@
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.docNumber</label>
+                                @Html.EditorFor(model => model.id, new { htmlAttributes = new { @class = "form-control", @id = "docNum" } })
+                                @Html.ValidationMessageFor(model => model.id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.effectiveDate</label>
+                                @Html.EditorFor(model => model.effectiveDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                @Html.ValidationMessageFor(model => model.effectiveDate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.regDate</label>
+                                @Html.EditorFor(model => model.registrationDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                @Html.ValidationMessageFor(model => model.registrationDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.receiver</label>
+                                @Html.DropDownListFor(m => m.ReceivingAuthorityId, (IEnumerable<SelectListItem>)ViewBag.ReceivingAuthorities, "", new { @class = "receiver", @id = "receiver_s" })
+                                @Html.ValidationMessageFor(m => m.ReceivingAuthorityId)
+                            </div>
+                            <div class="col-md-3" style="margin-top:25px;">
+                                <label class="lbl_termination" id="lbl_stermination">@ResourceUpload.termination  <input type="checkbox" class="" id="ck_stermination" name="terminationStatus" value="true" /></label>
+                            </div>
+                            <div class="col-md-4" style="margin-top:25px;">
+                                <label class="lbl_termination" id="lbl_schng">@ResourceUpload.modifiedOrders<input type="checkbox" class="" id="ck_schng" /></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6" id="div_termination_sorder">
+                            </div>
+                            <div class="col-md-6" id="div_termination_stype">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6" id="chngd_sfield">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12" id="paragraphs_stext">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">@ResourceUpload.note</label>
+                                @Html.TextAreaFor(model => model.description, new { @class = "form-control autogrow", @rows = 3, @id = "desc" })
+                                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.wordFile</label>
+                                <input type="file" name="file" accept=" application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="form-control" data-val="true" data-val-required="Zəhmət olmazsa, faylı daxil edin." />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.pdfFile</label>
+                                <input type="file" name="pdfFile" class="form-control" accept="application/pdf" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="pull-left">
+                                <button type="submit" class="btn btn-green btn-icon" style="margin-left:50px;">
+                                    <i class="entypo-upload"></i>
+                                    @ResourceUpload.download
+                                </button>
+                            </div>
+                            <div class="pull-right">
+                                <button class="btn btn-default" style="margin-right:50px;" data-dismiss="modal">
+                                    @ResourceUpload.exit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ----------Idare heyeti protokolu ve qerarı *@
+
+<div class="modal fade custom-width" id="modal-i_order" tabindex="-1">
+    <div class="modal-dialog" style="width: 60%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    x
+                </button>
+                <h3 class="modal-title">@ResourceUpload.managementBoard</h3>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("UploadOrderDocument", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <input type="text" hidden value="2" name="type" />
+                    @*@Html.HiddenFor(m => m.type, new { @value = "4" })*@
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.docNumber</label>
+                                @Html.EditorFor(model => model.id, new { htmlAttributes = new { @class = "form-control", @id = "docNum" } })
+                                @Html.ValidationMessageFor(model => model.id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.effectiveDate</label>
+                                @Html.EditorFor(model => model.effectiveDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                @Html.ValidationMessageFor(model => model.effectiveDate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">@ResourceUpload.regDate</label>
+                                @Html.EditorFor(model => model.registrationDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                @Html.ValidationMessageFor(model => model.registrationDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3" style="margin-top:25px;">
+                                <label class="lbl_termination" id="lbl_itermination">@ResourceUpload.termination <input type="checkbox" class="" id="ck_itermination" name="terminationStatus" value="true" /></label>
+                            </div>
+                            <div class="col-md-4" style="margin-top:25px;">
+                                <label class="lbl_termination" id="lbl_ichng">@ResourceUpload.modifiedDocs <input type="checkbox" class="" id="ck_ichng" /></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6" id="div_termination_iorder">
+                            </div>
+                            <div class="col-md-6" id="div_termination_itype">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6" id="chngd_ifield">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">@ResourceUpload.note</label>
+                                @Html.TextAreaFor(model => model.description, new { @class = "form-control autogrow", @rows = 3, @id = "desc" })
+                                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.wordFile</label>
+                                <input type="file" name="file" accept=" application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="form-control" data-val="true" data-val-required="Zəhmət olmazsa, faylı daxil edin." />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">@ResourceUpload.pdfFile</label>
+                                <input type="file" name="pdfFile" class="form-control" accept="application/pdf" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="pull-left">
+                                <button type="submit" class="btn btn-green btn-icon" style="margin-left:50px;">
+                                    <i class="entypo-upload"></i>
+                                    @ResourceUpload.download
+                                </button>
+                            </div>
+                            <div class="pull-right">
+                                <button class="btn btn-default" style="margin-right:50px;" data-dismiss="modal">
+                                    @ResourceUpload.exit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="modal fade custom-width" id="helper-modal" tabindex="-1">
+    <div class="modal-dialog" style="width:50%;">
+        <div class="modal-body">
+            <object data="~/UploadedFiles/Helper.pdf" type="application/pdf" width="100%" height="500px"></object>
+        </div>
+    </div>
+</div>*@

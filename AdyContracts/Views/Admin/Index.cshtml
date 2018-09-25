@@ -1,0 +1,221 @@
+﻿@model  AdyContracts.Models.UserViewModel
+@using AdyContracts.Resources
+
+@section Styles{
+    <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/adminIndex.css?v=06" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
+    <script src="~/Scripts/custom/admin.js"></script>
+}
+@{
+    List<SelectListItem> selectLists = new List<SelectListItem>();
+    selectLists.Add(new SelectListItem
+    {
+        Text = ResourceAdmin.approvedUsers,
+        Value = "True"
+    });
+    selectLists.Add(new SelectListItem
+    {
+        Text = ResourceAdmin.unauthorizedUsers,
+        Value = "False",
+        Selected = true
+    });
+}
+
+<div class="row" id="header">
+    <div class="form-group pull-left">
+        @Html.DropDownList("UserType", selectLists, new { @class = "form-control", @id = "UserType" })
+    </div>
+    <div class="dropdown pull-right" id="operations">
+        <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+            @AdyContracts.Resources.ResourceUpload.operations
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="$('#signUpModal').appendTo('body').modal('show');"><i class="entypo-user-add"></i> @ResourceAdmin.createAccount</a>
+            </li>
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="$('#RoleModal').appendTo('body').modal('show')" ;><i class="entypo-plus"></i> @ResourceAdmin.createRole</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row table-container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                @ResourceAdmin.accounts
+            </div>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                <table class="table table-bordered" id="unapproved_users">
+                    <thead>
+                        <tr>
+                            <th hidden>id</th>
+                            <th>@ResourceAdmin.name</th>
+                            <th>@ResourceAdmin.email</th>
+                            <th>@ResourceAdmin.username</th>
+                            <th>@ResourceAdmin.department</th>
+                            <th>@ResourceAdmin.gender</th>
+                            <th>@ResourceAdmin.role</th>
+                            <th><label>@ResourceAdmin.selectAll  <input type="checkbox" id="checkAll" /></label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var user in Model.userList)
+                        {
+                            string eid = user.Id + "," + user.email;
+                            <tr>
+                                <td hidden>@user.Id</td>
+                                <td>@user.firstName</td>
+                                <td>@user.email</td>
+                                <td>@user.username</td>
+                                <td>@user.department</td>
+                                <td>@user.gender</td>
+                                <td>
+                                    @Html.DropDownList("roleId", (IEnumerable<SelectListItem>)ViewBag.Roles, ResourceAdmin.selectRole, new { @class = "form-control input-sm role" })
+                                </td>
+                                <td><input type="checkbox" class="chk" name="selectedItems" value=@eid></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="row">
+                    <a href="@Url.Action("Index","Admin")" id="btn_approve" class="btn btn-success col-lg-1 col-lg-push-0" style="margin-left:20px">@ResourceAdmin.approveBtn</a>
+                    <a href="@Url.Action("DenyRequest","Admin")" class="btn btn-danger  col-lg-1 col-lg-push-0" id="btn_dny" style="margin-left:20px;">@ResourceAdmin.disapproveBtn</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="signUpModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">@ResourceAdmin.createAccount</h3>
+            </div>
+            @using (Html.BeginForm("signUp", "User", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.name</label>
+                        @Html.TextBox("firstName", null, new { @class = "form-control" })
+                        @Html.ValidationMessage("firstName")
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.lastname</label>
+                        @Html.TextBox("lastName", null, new { @class = "form-control" })
+                        @Html.ValidationMessage("lastName")
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.gender</label><br />
+                        @Html.RadioButton("gender", "Kişi")<span class="text-right"> @ResourceAdmin.male</span>
+                        @Html.RadioButton("gender", "Qadın")<span class="text-right"> @ResourceAdmin.female</span>
+                        @Html.ValidationMessage("gender")
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.birthdate</label>
+                        @Html.TextBox("birthdate", null, new { @class = "form-control", @type = "date" })
+                        @Html.ValidationMessage("birthdate")
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.department</label>
+                        @Html.DropDownList("departId",
+                                                                                                                                                 (IEnumerable<SelectListItem>)ViewBag.Departments, ResourceAdmin.selectDepart, new { @class = "form-control" })
+                        @Html.ValidationMessage("departId")
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.role</label>
+                        @Html.DropDownList("roleId",
+                                                                                                                                                 (IEnumerable<SelectListItem>)ViewBag.Roles, ResourceAdmin.selectRole, new { @class = "form-control" })
+                        @Html.ValidationMessage("roleId")
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.username</label>
+                        @Html.TextBox("username", null, new { @class = "form-control", @id = "userId" })
+                        @Html.ValidationMessage("username")
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.email</label>
+                        @Html.TextBox("email", null, new { @class = "form-control" })
+                        @Html.ValidationMessage("email")
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.password</label>
+                        @Html.TextBox("password", null, new { @class = "form-control", @id = "userPassword", @type = "password" })
+                        @Html.ValidationMessage("password")
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.confirmPassword</label>
+                        @Html.TextBox("ConfirmPassowrd", null, new { @class = "form-control", @id = "confirmPassword", @type = "password" })
+                        @Html.ValidationMessage("ConfirmPassowrd")
+                    </div>
+                    <div class="form-group">
+                        <label id="lbl_sendMailStatus">@ResourceAdmin.emialSend  @*<input type="checkbox" id="emailSendStatus" name="emailSendStatus" checked>*@ @Html.CheckBoxFor(m => m.emailSendStatus, new { @checked = true })</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary pull-left">@ResourceAdmin.create</button>
+                    <button class="btn btn-green" data-dismiss="modal">@ResourceAdmin.close</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="RoleModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">@ResourceAdmin.createRole</h3>
+            </div>
+            @using (Html.BeginForm("CreateRole", "Admin", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label">@ResourceAdmin.roleName</label>
+                        @Html.TextBoxFor(m => m.roleName, null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.roleName)
+                    </div>
+                    <div id="table-wrapper">
+                        <div id="scroll_table">
+                            <table class="table table-bordered table-hover" id="tbl_menu">
+                                <thead>
+                                    <tr>
+                                        <th>@ResourceAdmin.menuName</th>
+                                        <th>@ResourceAdmin.icludedMenu</th>
+                                        <th><label>@ResourceAdmin.selectAll:  </label> <input type="checkbox" id="checkAllMenu" /></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.menus)
+                                    {
+                                        <tr>
+                                            <td>@item.MenuName</td>
+                                            <td>@item.MenuParentPath</td>
+                                            <td><input class="chk-input" type="checkbox" value="@item.MenuId" name="ids" /></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success  btn-icon icon-left pull-left"><i class="entypo-plus"></i>@ResourceAdmin.create</button>
+                    <button type="submit" class="btn btn-default pull-right" data-dismiss="modal">@ResourceAdmin.close</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

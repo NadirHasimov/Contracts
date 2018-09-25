@@ -1,0 +1,8 @@
+﻿.row {
+    margin: 20px;
+}
+
+.table-container .panel .table > thead > tr > th:last-child,
+.table-container .panel .table > tbody > tr > td:last-child {
+    text-align: center;
+}

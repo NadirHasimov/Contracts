@@ -1,0 +1,313 @@
+﻿@using AdyContracts.Resources
+@{
+    ViewBag.Title = "Axtarış";
+}
+
+@section Scripts{
+    <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
+    <script src="~/Scripts/custom/index.js"></script>
+}
+
+@section Styles{
+    <link href="~/Content/theme/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/index.css?v=06" rel="stylesheet" />
+    <style>
+        .modal-body {
+            position: relative;
+            padding: 20px;
+        }
+
+        .modal.in .modal-dialog {
+            moz-transform: translate(0, 0);
+            -o-transform: translate(0, 0);
+            -webkit-transform: translate(0, 0);
+            -ms-transform: translate(0, 0);
+            transform: translate(0, 0);
+            -webkit-opacity: 1;
+            -moz-opacity: 1;
+            opacity: 1;
+            filter: alpha(opacity=100);
+        }
+    </style>
+}
+
+<div class="row " id="panel-container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                @ResourceMain.search
+            </div>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+            {
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="alpiTable" nowrap>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table width="100%" border="0" cellspacing="2" cellpadding="0">
+                                    <tbody>
+                                        <tr>
+                                            <td width="49%" valign="top">
+                                                <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" class="myTable">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td width="26%" class="bold">@ResourceMain.general</td>
+                                                                            <td width="44%">&nbsp;</td>
+                                                                            <td width="30%">&nbsp;</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@ResourceMain.number</td>
+                                                                            <td colspan="2" nowrap="nowrap"><input type="text" name="documentNumber" id="docNumber" class="textInputSearch">&nbsp;</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@ResourceMain.govRegistrationNumber</td>
+                                                                            <td colspan="2" nowrap="nowrap"><input type="text" name="regGovNumber" id="regGovNumber" class="textInputSearch">&nbsp;</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@ResourceMain.accordingWords</td>
+                                                                            <td colspan="2" nowrap="nowrap">
+                                                                                <input type="text" name="description" id="description" class="textInputSearch">&nbsp;
+                                                                                <input type="hidden" id="descriptionInline" name="descriptionInline">
+                                                                                <!--  <br>
+                                                                                <br id="srch">-->
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@ResourceMain.cover</td>
+                                                                            <td>
+                                                                                <select name="searchType" id="searchType" class="textInputSearch">
+                                                                                    <option value="1">@ResourceMain.headline</option>
+                                                                                    <option value="2">@ResourceMain.inTheText</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td>
+                                                                                <label>
+                                                                                    <input type="checkbox" name="exactSame" id="exactSame" value="1">@ResourceMain.exactMatch
+                                                                                </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>@ResourceMain.sorting</td>
+                                                                            <td>
+                                                                                <select name="searchOrder" id="searchOrder" class="textInputSearch">
+                                                                                    <option value="1">@ResourceMain.dueToHistory</option>
+                                                                                    <option value="2">@ResourceMain.dueToDocNumber</option>
+                                                                                    <option value="3">@ResourceMain.byDocName</option>
+                                                                                    <option value="4">@ResourceMain.byType</option>
+                                                                                    <option value="5">@ResourceMain.byReceiver</option>
+                                                                                    <option value="6">@ResourceMain.byStatus</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td>
+                                                                                <label>
+                                                                                    <input type="checkbox" name="descendingOrder" id="descendingOrder" value="1">
+                                                                                    @ResourceMain.descending
+                                                                                </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                            <td width="49%" valign="top">
+                                                <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="myTable">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td class="bold">@ResourceMain.dates</td>
+                                                                                            <td>&nbsp;</td>
+                                                                                            <td>&nbsp;</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>@ResourceMain.regDate</td>
+                                                                                            <td nowrap="nowrap"><input type="date" name="registrationDate1" id="registrationDate1" class="form-control"></td>
+                                                                                            <td nowrap="nowrap"><input type="date" name="registrationDate2" id="registrationDate2" class="form-control"></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>@ResourceMain.effectiveDate</td>
+                                                                                            <td><input type="date" name="effectiveDate1" id="effectiveDate1" class="form-control"></td>
+                                                                                            <td><input type="date" name="effectiveDate2" id="effectiveDate2" class="form-control"></td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td valign="baseline">
+                                                                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="myTable">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td class="bold">@ResourceMain.status</td>
+                                                                                            <td>&nbsp;</td>
+                                                                                            <td>&nbsp;</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <label>
+                                                                                                    <input name="status" type="radio" value="1" checked>
+                                                                                                    @ResourceMain.existingLaw
+                                                                                                </label>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <label>
+                                                                                                    <input name="status" type="radio" value="0">
+                                                                                                    @ResourceMain.voidLaw
+                                                                                                </label>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <label>
+                                                                                                    <input name="status" type="radio" value="6">
+                                                                                                    @ResourceMain.all
+                                                                                                </label>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td width="1" rowspan="4" valign="top">&nbsp;</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="myTable">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="bold">@ResourceMain.type</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <div class="divScroll-alpiFrameworkTypes">
+                                                                                    @foreach (var type in (List<SelectListItem>)ViewBag.DocTypes)
+                                                                                    {
+                                                                                        <label>
+                                                                                            <input type="checkbox" name="docTypes" value="@type.Value">
+                                                                                            @type.Text
+                                                                                        </label><br>
+                                                                                    }
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                            <td rowspan="3" valign="top">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="myTable">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td class="bold">@ResourceMain.receiver</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <div class="divScroll-tesnifat">
+                                                                                                    @foreach (var receiver in (List<SelectListItem>)ViewBag.ReceivingAuthorities)
+                                                                                                    {
+                                                                                                        <label>
+                                                                                                            <input type="checkbox" name="institutions" value="@receiver.Value">
+                                                                                                            @receiver.Text
+                                                                                                        </label><br>
+                                                                                                    }
+                                                                                                </div>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" nowrap="nowrap"><input type="submit" id="filterButton" name="filterButton" value="@ResourceMain.searchBtn">&nbsp;<input type="reset" id="alpiSearchSubmitBtn" name="alpiSearchSubmitBtn" value="@ResourceMain.again"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+<div id="loader" style="margin-left:47%"></div>
+
+<div class="table-container">
+    <div class="panel">
+        <div class="panel-body tbl">
+            <div id="table-container">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="height:40px">
+
+</div>

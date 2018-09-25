@@ -1,0 +1,38 @@
+﻿@model AdyContracts.Models.AttachmentViewModel
+@using AdyContracts.Resources
+<table class="table table-bordered" id="attachment-table">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>@ResourceUpload.type</th>
+            <th>@ResourceUpload.regDate</th>
+            <th>@ResourceUpload.note</th>
+            <th>@ResourceUpload.operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.listOfAttachments)
+        {
+            <tr>
+                <td>@item.id</td>
+                <td>@item.contractType.</td>
+                <td>@item.effectiveDate.Date.ToShortDateString()</td>
+                <td>@item.description</td>
+                <td>
+                    <a href="@Url.Action("ViewFile","Home", new { item.fileName})" target="_blank" class="btn btn-info btn-icon icon-left btn-sm">
+                        <i class="entypo-eye"></i>
+                        Sənədə bax
+                    </a>
+                    <a href="@Url.Action("Edit","Home",new {item.id, item.typeId })" class="btn btn-default btn-icon icon-left btn-sm">
+                        <i class="entypo-pencil"></i>
+                        Dəyişdir
+                    </a>
+                    <a href="@Url.Action("DeleteDocument","Home",new {item.id })" class="btn btn-danger btn-icon icon-left btn-sm delete" id="btn_delete">
+                        <i class="entypo-trash"></i>
+                        Sil
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

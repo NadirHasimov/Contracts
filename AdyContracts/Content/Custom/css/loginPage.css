@@ -1,0 +1,13 @@
+﻿.panel{
+    margin-top:30%;
+    font-size:large;
+}
+    .panel.panel-heading {
+        background-color: Highlight;
+    }
+.panel .panel-title{
+    font-size:large;
+}
+button{
+    font-size:large !important;
+}

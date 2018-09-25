@@ -1,0 +1,245 @@
+﻿@model AdyContracts.Models.DocumentViewModel
+@using AdyContracts.Resources
+
+@{
+    ViewBag.Title = "Edit";
+}
+@section Styles{
+    <link href="~/Content/Selectize/css/selectize.css" rel="stylesheet" />
+    <style>
+        .selectize-dropdownn {
+            font-size: 11px !important;
+        }
+    </style>
+}
+@section Scripts{
+    <script src="~/Content/Selectize/js/standalone/selectize.js"></script>
+    <script src="~/Scripts/custom/receiverSelectize.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#docIdEdit').rules('remove', 'remote');
+            $('#termination_contract').selectize({
+                sortField: 'text',
+                placeholder: 'Xitam olunan sənədi seçin...'
+            });
+            $('#changed_orders').selectize({
+                plugins: ['remove_button'],
+                placeholder: 'Dəyişdirilən əmr və ya əmrləri seçin...',
+                delimiter: ',',
+                maxItems: 50
+            });
+            $('#ck_chng').change(function () {
+                var ischecked = $('#ck_chng').is(':checked');
+                var typeId = $('#type').val();
+                $('#chngd_field').empty();
+                if (ischecked) {
+                    $.ajax({
+                        url: '/Home/GetOrderDocLists',
+                        data: { typeId: typeId },
+                        type: 'GET',
+                        success: function (response) {
+                            var sel = $('<select id=' + '"changedOrderDocs"' + 'name="changedOrderDocs[]"' + '>').appendTo('#chngd_field');
+                            $(response).each(function () {
+                                sel.append($("<option>").attr('value', this.Value).text(this.Text));
+                            });
+                            $('#changedOrderDocs').selectize({
+                                plugins: ['remove_button'],
+                                placeholder: 'Dəyişdirilən əmr və ya əmrləri seçin...',
+                                delimiter: ',',
+                                maxItems: 30
+                            });
+                        }
+                    });
+                }
+            });
+        });
+        $('#ck_termination').change(function () {
+            var ischecked = $('#ck_termination').is(':checked');
+            var typeId = $('#type').val();
+            if (ischecked) {
+                $.ajax({
+                    url: '/Home/GetOrderDocLists',
+                    data: { typeId: typeId },
+                    type: 'GET',
+                    success: function (res) {
+                        var sel = $('<select id="orderList" name="terminatedDocNumber">').appendTo('#div_termination_order');
+                        $(res).each(function () {
+                            sel.append($("<option>").attr('value', this.Value).text(this.Text));
+                        });
+                        $('#orderList').selectize({
+                            placeholder: 'Xitam verilən əmri seçin...'
+                        });
+                        $('<label style="margin-right:5px;">Bütövlükdə</label>').appendTo('#div_termination_type');
+                        $('<input type="radio" value="1" name="rbtnTerminationType" style="margin-right:5px;"/>').appendTo('#div_termination_type');
+                        $('<label style="margin-right:5px;">Hissəvi</label>').appendTo('#div_termination_type');
+                        $('<input type="radio" value="2" name="rbtnTerminationType" />').appendTo('#div_termination_type');
+                    }
+                });
+            } else {
+                $('#div_termination_order').empty();
+                $('#div_termination_type').empty();
+            };
+        });
+        $('#chng_file').change(function () {
+            var ischecked = $('#chng_file').is(':checked');
+            if (ischecked) {
+                $('<label class="control-label">Yeni fayl (Word)</label>').appendTo('#file_field');
+                $('<input type="file" name="file" accept=" application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="form-control" data-val="true" data-val-required="Zəhmət olmazsa, faylı daxil edin." />').appendTo('#file_field');
+            } else {
+                $('#file_field').empty();
+            };
+        });
+    </script>
+}
+
+
+
+@using (Html.BeginForm("Edit", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-horizontal col-md-6 col-md-push-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    @ResourceMain.edit
+                </div>
+            </div>
+            <div class="panel-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">@ResourceUpload.docNumber</label>
+                        <input type="text" hidden value="@Model.id" name="orginalId" />
+                        @Html.EditorFor(model => model.id, new { htmlAttributes = new { @class = "form-control", @id = "docIdEdit" } })
+                        @Html.ValidationMessageFor(model => model.id, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">@ResourceUpload.govRegNumber</label>
+                        @Html.EditorFor(model => model.govRegNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.govRegNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">@ResourceUpload.receiver</label>
+                        @Html.DropDownListFor(m => m.ReceivingAuthorityId, (IEnumerable<SelectListItem>)ViewBag.ReceivingAuthorities, new { @class = "", @id = "receivingAuthorityId" })
+                        @Html.ValidationMessageFor(m => m.ReceivingAuthorityId)
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">@ResourceMain.type</label>
+                        @Html.DropDownListFor(m => m.type, (IEnumerable<SelectListItem>)ViewBag.DocTypes, "--Sənədin növü--", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.type)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">@ResourceUpload.regDate</label>
+                        @Html.TextBoxFor(m => m.registrationDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(model => model.registrationDate, "", new { @class = "text-danger" })
+                    </div>
+                    @if (Model.type == 3)
+                    {
+                        <div class="col-md-6">
+                            <label class="control-label">@ResourceUpload.termination</label>
+                            @Html.DropDownListFor(m => m.terminatedDocNumber, (IEnumerable<SelectListItem>)ViewBag.SelectListItems, "", new { @class = "selectize-dropdownn", @id = "termination_contract" })
+                            @Html.ValidationMessageFor(m => m.terminatedDocNumber)
+                        </div>
+                    }
+                    else if (Model.type == 1 || Model.type == 4 || Model.type == 2)
+                    {
+                        <div class="col-md-6">
+                            <label class="control-label">@ResourceUpload.effectiveDate</label>
+                            @Html.TextBoxFor(m => m.effectiveDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(model => model.effectiveDate, "", new { @class = "text-danger" })
+                        </div>
+                    }
+                </div>
+
+                @if (Model.type == 1 || Model.type == 4 || Model.type == 2)
+                {
+                    <div class="form-group">
+                        <div class="col-md-6" id="div_termination_order">
+                            @if (!String.Equals("0", Model.terminatedDocNumber))
+                            {
+                                @Html.DropDownListFor(m => m.terminatedDocNumber, (IEnumerable<SelectListItem>)ViewBag.SelectListItems, "", new { @class = "selectize-dropdownn", @id = "termination_contract" })
+                                @Html.ValidationMessageFor(m => m.terminatedDocNumber)
+                            }
+                        </div>
+                        <div class="col-md-6" id="div_termination_type">
+                            @if (!String.Equals("0", Model.terminatedDocNumber))
+                            {
+                                <label style="margin-right:5px;">@ResourceUpload.ofAll</label>
+                                @Html.RadioButtonFor(m => m.rbtnTerminationType, "1", new { @style = "margin-right:5px;" })
+
+                                <label style="margin-right:5px;">@ResourceUpload.part</label>
+                                @Html.RadioButtonFor(m => m.rbtnTerminationType, "2")
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            @if (!String.Equals("0", Model.terminatedDocNumber))
+                            {
+                                <label class="control-label" style="font-size:medium;">@ResourceUpload.termination <input type="checkbox" id="ck_termination" checked /></label>
+                            }
+                            else
+                            {
+                                <label class="control-label" style="font-size:medium;">@ResourceUpload.termination <input type="checkbox" id="ck_termination" /></label>
+                            }
+                        </div>
+                        @if (Model.changedOrderDocs != null)
+                        {
+                            <div class="col-md-6">
+                                <label class="control-label" style="font-size:medium;">@ResourceUpload.modifiedCandCommands <input type="checkbox" id="ck_chng" checked /></label>
+                                <div id="chngd_field">
+                                    @Html.ListBoxFor(m => m.changedOrderDocs, (IEnumerable<SelectListItem>)ViewBag.SelectListItems, new { @class = "selectize-dropdownn", @id = "changed_orders", @multiple = "true", name = "changedOrderDoc" })
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-6">
+                                <label class="control-label" style="font-size:medium">@ResourceUpload.modifiedCandCommands <input type="checkbox" id="ck_chng" /></label>
+                                <div id="chngd_field">
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                @if (Model.type == 1 || Model.type == 4 || Model.type == 2)
+                {
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label class="control-label" style="font-size:medium;margin-top:10px;">@ResourceUpload.updateFile <input type="checkbox" id="chng_file" /></label>
+                        </div>
+                        <div class="col-md-6" id="file_field">
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label">@ResourceUpload.note</label>
+                        @Html.TextAreaFor(model => model.description, new { @class = "form-control autogrow", @rows = 3, @id = "desc" })
+                        @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                    <div class="pull-left">
+                        <button type="submit" class="btn btn-green btn-icon" style="margin-left:50px;">
+                            <i class="entypo-pencil"></i>
+                            @ResourceMain.edit
+                        </button>
+                    </div>
+
+                    <div class="pull-right">
+                        <a href="@Url.Action("Upload", "Home")" type="submit" class="btn btn-default" style="margin-right:50px;">
+                            @ResourceUpload.exit
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

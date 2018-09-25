@@ -1,0 +1,58 @@
+﻿@model  List<AdyContracts.DomainModels.CourtNotificationModel>
+
+@{
+    ViewBag.Title = "Bütün bildirişlər";
+}
+
+@section Styles
+    {
+    <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/Custom/css/allMessages.css" rel="stylesheet" />
+}
+@section Scripts
+    {
+    <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
+    <script src="~/Scripts/custom/allMessages.js"></script>
+}
+<div class="row table-container">
+    <div class="panel panel-default" data-collapsed="false">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Bildirişlər
+            </div>
+            <div class="panel-options">
+                <a href="#" id="reload-attachments">
+                    <i class="entypo-arrows-ccw"></i>
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table" id="message_table">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Ad/Soyad</th>
+                        <th>Gün</th>
+                        <th>Mesaj</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Court_id</td>
+                            <td>@item.Fullname</td>
+                            <td>@item.Day</td>
+                            <td>@item.Message</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

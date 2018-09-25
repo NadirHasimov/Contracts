@@ -1,0 +1,24 @@
+﻿@model List<AdyContracts.Models.CourtViewModel>
+@using AdyContracts.Resources
+
+<table class="table table-bordered" id="trial-table">
+    <thead>
+        <tr>
+            <th>@ResourceCourt.firstLastName</th>
+            <th>@ResourceCourt.day</th>
+            <th>@ResourceCourt.clock</th>
+            <th>@ResourceCourt.address</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trial in Model)
+        {
+            <tr>
+                <td>@trial.fullname</td>
+                <td>@trial.trialDate.ToString("dd-MMM-yyyy")</td>
+                <td>@trial.trialDate.ToString("H:mm")</td>
+                <td>@trial.location</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,72 @@
+﻿@model AdyContracts.Models.UserViewModel
+
+<div class="modal fade" id="signUpModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Qeydiyyat</h3>
+            </div>
+            @using (Html.BeginForm("signUp", "User", FormMethod.Post, Model))
+            {
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label">Ad</label>
+                        @Html.TextBox("firstName", null, new { @class = "form-control" })
+                        @Html.ValidationMessage("firstName")
+                        @*@Html.TextBoxFor(m => m.firstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.firstName)*@
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Soyad</label>
+                        @Html.TextBoxFor(m => m.lastName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.lastName)
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Cins</label><br />
+                        @Html.RadioButtonFor(m => m.gender, "Male")<span class="text-right"> Kişi</span>
+                        @Html.RadioButtonFor(m => m.gender, "Female")<span class="text-right"> Qadın</span>
+                        @Html.ValidationMessageFor(m => m.gender)
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Doğum tarixi</label>
+                        @Html.TextBoxFor(m => m.birthdate, new { @class = "form-control", @type = "date" })
+                        @Html.ValidationMessageFor(m => m.birthdate)
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Şöbə</label>
+                        @Html.DropDownListFor(m => m.departId,
+                                                       (IEnumerable<SelectListItem>)ViewBag.Departments, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.departId)
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">İstifadəçi adı</label>
+                        @Html.TextBoxFor(m => m.username, new { @class = "form-control", @id = "userId" })
+                        @Html.ValidationMessageFor(m => m.username)
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Email</label>
+                        @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.email)
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Parol</label>
+                        @Html.TextBoxFor(m => m.password, new { @class = "form-control", @id = "userPassword", @type = "password" })
+                        @Html.ValidationMessageFor(m => m.password)
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Parolu Təsdiqlə</label>
+                        @Html.TextBoxFor(m => m.ConfirmPassowrd, new { @class = "form-control", @id = "confirmPassword", @type = "password" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassowrd)
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary pull-left">Hesab yarat</button>
+                    <button class="btn btn-green" data-dismiss="modal">Bağla</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

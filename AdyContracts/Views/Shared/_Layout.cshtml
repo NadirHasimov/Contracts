@@ -1,0 +1,520 @@
+﻿@using AdyContracts.Resources
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> @ViewBag.Title</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="~/Scripts/theme/jquery-ui/jquery-ui.css" rel="stylesheet" />
+
+    <link href="~/Content/theme/css/neon-core.css" rel="stylesheet" />
+    <link href="~/Content/theme/css/neon-theme.css" rel="stylesheet" />
+    <link href="~/Content/theme/css/neon-forms.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/theme/font-icons/entypo/css/entypo.css" rel="stylesheet" />
+
+
+    @RenderSection("Styles", required: false)
+    <link href="~/Content/Custom/css/common.css?v=6" rel="stylesheet" />
+    <script src="~/Scripts/theme/jquery-1.11.3.min.js"></script>
+
+    <script src="~/Scripts/theme/jquery.validate.min.js"></script>
+    <script src="~/Scripts/theme/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/theme/jquery-ui/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.small').popover({
+                trigger: 'hover',
+                placement: 'right',
+                container: '.pop-container'
+            });
+            var culture = $.cookie('culture');
+            if (culture != '') {
+                $('#' + culture).addClass('active');
+            } else $('#Az').addClass('active');
+            $('.href').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'GET',
+                    url: $(this).attr('href'),
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body class="page-body">
+    @{
+        int collapsed = 0;
+        if (Request.Cookies["sidebarCollapsed"] != null)
+        {
+            collapsed = int.Parse(Request.Cookies["sidebarCollapsed"].Value);
+        }
+    }
+    <div class="page-container @(collapsed == 1 ? "sidebar-collapsed" : "")">
+        <div class="sidebar-menu">
+            <header class="logo-env">
+                @*Logo*@
+                <div class="logo">
+                    <a href="@Url.Action("Index","Home")">
+                        <img src="~/images/demiryol-qsc.jpg" width="140" height="120" alt="ADY Express" />
+                    </a>
+                </div>
+                <!-- logo collapse icon -->
+                <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                <div class="sidebar-collapse">
+                    <a href="#" class="sidebar-collapse-icon with-animation" data-rel="collapse-sidebar">
+                        <!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
+                        <i class="entypo-menu"></i>
+                    </a>
+                </div>
+                <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+            </header>
+
+            <ul id="main-menu" class="">
+                @AdyContracts.DALC.UserDALC.GetMenus(User.Identity.Name)
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="row" id="layout-header">
+                <!-- Profile Info and Notifications -->
+                <div class="col-md-6 col-sm-8 clearfix">
+                    <ul class="user-info pull-left pull-none-xsm">
+                        <!-- Profile Info -->
+                        <li class="profile-info dropdown" style="margin-top:10px;">
+                            <!-- add class "pull-right" if you want to place this from right -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:#376ea6">
+                                @*<img src="assets/images/thumb-1@2x.png" alt="" class="img-circle" width="44">*@
+                                @User.Identity.Name
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <!-- Reverse Caret -->
+                                <li class="caret"></li>
+
+                                <!-- Profile sub-links -->
+                                <li>
+                                    <a href="extra-timeline.html">
+                                        <i class="entypo-user"></i>
+                                        Profili yenilə
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="mailbox.html">
+                                        <i class="entypo-mail"></i>
+                                        Inbox
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="extra-calendar.html">
+                                        <i class="entypo-calendar"></i>
+                                        Kalendar
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#">
+                                        <i class="entypo-clipboard"></i>
+                                        Tapşırıqlar
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                    <ul class="user-info pull-left pull-right-xs pull-none-xsm">
+
+                        <!-- Raw Notifications -->
+                        <li class="notifications dropdown">
+
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <i class="entypo-attention"></i>
+                                <span class="badge badge-info">6</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li class="top">
+                                    <p class="small">
+                                        <a href="#" class="pull-right">Mark all Read</a>
+                                        You have <strong>3</strong> new notifications.
+                                    </p>
+                                </li>
+
+                                <li>
+                                    <ul class="dropdown-menu-list scroller" tabindex="5001" style="overflow: hidden; outline: none;">
+                                        <li class="unread notification-success">
+                                            <a href="#">
+                                                <i class="entypo-user-add pull-right"></i>
+
+                                                <span class="line">
+                                                    <strong>New user registered</strong>
+                                                </span>
+
+                                                <span class="line small">
+                                                    30 seconds ago
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="unread notification-secondary">
+                                            <a href="#">
+                                                <i class="entypo-heart pull-right"></i>
+
+                                                <span class="line">
+                                                    <strong>Someone special liked this</strong>
+                                                </span>
+
+                                                <span class="line small">
+                                                    2 minutes ago
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="notification-primary">
+                                            <a href="#">
+                                                <i class="entypo-user pull-right"></i>
+
+                                                <span class="line">
+                                                    <strong>Privacy settings have been changed</strong>
+                                                </span>
+
+                                                <span class="line small">
+                                                    3 hours ago
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="notification-danger">
+                                            <a href="#">
+                                                <i class="entypo-cancel-circled pull-right"></i>
+
+                                                <span class="line">
+                                                    John cancelled the event
+                                                </span>
+
+                                                <span class="line small">
+                                                    9 hours ago
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="notification-info">
+                                            <a href="#">
+                                                <i class="entypo-info pull-right"></i>
+
+                                                <span class="line">
+                                                    The server is status is stable
+                                                </span>
+
+                                                <span class="line small">
+                                                    yesterday at 10:30am
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="notification-warning">
+                                            <a href="#">
+                                                <i class="entypo-rss pull-right"></i>
+
+                                                <span class="line">
+                                                    New comments waiting approval
+                                                </span>
+
+                                                <span class="line small">
+                                                    last week
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="external">
+                                    <a href="#">View all notifications</a>
+                                </li>
+                                <div id="ascrail2001" class="nicescroll-rails" style="padding-right: 3px; width: 10px; z-index: 1000; position: absolute; top: 0px; left: -10px; height: 0px; cursor: default; display: none;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 0px; background-color: rgb(212, 212, 212); border: 1px solid rgb(204, 204, 204); background-clip: padding-box; border-radius: 1px;"></div></div>
+                                <div id="ascrail2001-hr" class="nicescroll-rails" style="height: 7px; z-index: 1000; top: -7px; left: 0px; position: absolute; cursor: default; display: none;"><div style="position: relative; top: 0px; height: 5px; width: 0px; background-color: rgb(212, 212, 212); border: 1px solid rgb(204, 204, 204); background-clip: padding-box; border-radius: 1px;"></div></div>
+                            </ul>
+
+                        </li>
+                        @{
+                            var notifacation = AdyContracts.DALC.CourtDALC.GetCourtNotifications(User.Identity.Name);
+                            int count = notifacation.Count > 5 ? 5 : notifacation.Count;
+                        }
+                        <!-- Message Notifications -->
+                        <li class="notifications dropdown">
+
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <i class="entypo-mail"></i>
+                                <span class="badge badge-secondary">@notifacation.Count</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li class="pop-container">
+                                    <ul class="dropdown-menu-list scroller" tabindex="-1" style="overflow: hidden; outline: none;">
+                                        @if (count == 0)
+                                        {
+                                            <li>
+                                                <span class="line desc" style="margin-top:5px; margin-left:5px;">
+                                                    @Resource.noNotification
+                                                </span>
+                                            </li>
+                                        }
+                                        else if (count > 0)
+                                        {
+                                            for (int i = 0; i < count; i++)
+                                            {
+                                                <li>
+                                                    <a>
+                                                        <span class="image pull-right">
+                                                            <img src="assets/images/thumb-3.png" alt="" class="img-circle">
+                                                        </span>
+
+                                                        <span class="line">
+                                                            @notifacation[i].Fullname
+                                                            - @notifacation[i].Day
+                                                        </span>
+
+                                                        <span class="line desc small" data-content="@notifacation[i].Message">
+                                                            @notifacation[i].Message
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </li>
+
+                                <li class="external">
+                                    <a href="@Url.Action("AllMessages","Court")">@Resource.allMessages</a>
+                                </li>
+                                <div id="ascrail2002" class="nicescroll-rails" style="padding-right: 3px; width: 10px; z-index: 1000; position: absolute; top: 0px; left: -10px; height: 0px; cursor: default; display: none;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 0px; background-color: rgb(212, 212, 212); border: 1px solid rgb(204, 204, 204); background-clip: padding-box; border-radius: 1px;"></div></div>
+                                <div id="ascrail2002-hr" class="nicescroll-rails" style="height: 7px; z-index: 1000; top: -7px; left: 0px; position: absolute; cursor: default; display: none;"><div style="position: relative; top: 0px; height: 5px; width: 0px; background-color: rgb(212, 212, 212); border: 1px solid rgb(204, 204, 204); background-clip: padding-box; border-radius: 1px;"></div></div>
+                            </ul>
+                        </li>
+
+                        <!-- Task Notifications -->
+                        @*<li class="notifications dropdown">
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <i class="entypo-list"></i>
+                            <span class="badge badge-warning">1</span>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li class="top">
+                                <p>You have 6 pending tasks</p>
+                            </li>
+
+                            <li>
+                                <ul class="dropdown-menu-list scroller" tabindex="5003" style="overflow: hidden; outline: none;">
+                                    <li>
+                                        <a href="#">
+                                            <span class="task">
+                                                <span class="desc">Procurement</span>
+                                                <span class="percent">27%</span>
+                                            </span>
+
+                                            <span class="progress">
+                                                <span style="width: 27%;" class="progress-bar progress-bar-success">
+                                                    <span class="sr-only">27% Complete</span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="task">
+                                                <span class="desc">App Development</span>
+                                                <span class="percent">83%</span>
+                                            </span>
+
+                                            <span class="progress progress-striped">
+                                                <span style="width: 83%;" class="progress-bar progress-bar-danger">
+                                                    <span class="sr-only">83% Complete</span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="task">
+                                                <span class="desc">HTML Slicing</span>
+                                                <span class="percent">91%</span>
+                                            </span>
+
+                                            <span class="progress">
+                                                <span style="width: 91%;" class="progress-bar progress-bar-success">
+                                                    <span class="sr-only">91% Complete</span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="task">
+                                                <span class="desc">Database Repair</span>
+                                                <span class="percent">12%</span>
+                                            </span>
+
+                                            <span class="progress progress-striped">
+                                                <span style="width: 12%;" class="progress-bar progress-bar-warning">
+                                                    <span class="sr-only">12% Complete</span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="task">
+                                                <span class="desc">Backup Create Progress</span>
+                                                <span class="percent">54%</span>
+                                            </span>
+
+                                            <span class="progress progress-striped">
+                                                <span style="width: 54%;" class="progress-bar progress-bar-info">
+                                                    <span class="sr-only">54% Complete</span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="task">
+                                                <span class="desc">Upgrade Progress</span>
+                                                <span class="percent">17%</span>
+                                            </span>
+
+                                            <span class="progress progress-striped">
+                                                <span style="width: 17%;" class="progress-bar progress-bar-important">
+                                                    <span class="sr-only">17% Complete</span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="external">
+                                <a href="#">See all tasks</a>
+                            </li>
+                            <div id="ascrail2003" class="nicescroll-rails" style="padding-right: 3px; width: 10px; z-index: 1000; position: absolute; top: 0px; left: -10px; height: 0px; cursor: default; display: none;"><div style="position: relative; top: 0px; float: right; width: 5px; height: 0px; background-color: rgb(212, 212, 212); border: 1px solid rgb(204, 204, 204); background-clip: padding-box; border-radius: 1px;"></div></div>
+                            <div id="ascrail2003-hr" class="nicescroll-rails" style="height: 7px; z-index: 1000; top: -7px; left: 0px; position: absolute; cursor: default; display: none;"><div style="position: relative; top: 0px; height: 5px; width: 0px; background-color: rgb(212, 212, 212); border: 1px solid rgb(204, 204, 204); background-clip: padding-box; border-radius: 1px;"></div></div>
+                        </ul>
+
+                    </li>*@
+
+                    </ul>
+
+                </div>
+
+
+                <!-- Raw Links -->
+                <div class="col-md-6 col-sm-4 clearfix hidden-xs">
+
+                    <ul class="list-inline links-list pull-right">
+
+                        <!-- Language Selector -->
+                        <li class="dropdown language-selector">
+
+                            @Resource.language: &nbsp;
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                                <img src="@Resource.langUrl">
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li id="Az">
+                                    <a href="@Url.Action("ChangeLanguage","User",new {lang="Az" })" class="href">
+                                        <img src="~/images/flags/azerbaijan.png">
+                                        <span>@Resource.azerbaijani</span>
+                                    </a>
+                                </li>
+                                <li id="En">
+                                    <a href="@Url.Action("ChangeLanguage","User",new {lang="En" })" class="href">
+                                        <img src="~/images/flags/england.png">
+                                        <span>@Resource.english</span>
+                                    </a>
+                                </li>
+                                <li id="Ru">
+                                    <a href="@Url.Action("ChangeLanguage","User",new {lang="Ru" })" class="href">
+                                        <img src="~/images/flags/russia.png">
+                                        <span>@Resource.russian</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+
+                        <li class="sep"></li>
+
+
+                        <li>
+                            <a href="#" data-toggle="chat" data-animate="1" data-collapse-sidebar="1">
+                                <i class="entypo-chat"></i>
+                                @Resource.messages
+
+                                <span class="badge badge-success chat-notifications-badge">3</span>
+                            </a>
+                        </li>
+
+                        <li class="sep"></li>
+
+                        <li>
+                            <a href="javascript:;" onclick="$('#helper-modal').appendTo('body').modal('show')" class="">
+                                <i class="entypo-help"></i>
+                                @Resource.help
+                            </a>
+                        </li>
+
+                        <li class="sep"></li>
+
+                        <li>
+                            <a href="@Url.Action("SignOut","User")">
+                                @Resource.logout <i class="entypo-logout right"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+            @RenderBody()
+            <div class="page-footer">
+                <label class="footer-content">  © 2018 Azərbaycan Dəmir Yolları Məlumat Hesablama Mərkəzi  </label>
+            </div>
+            <div class="modal fade custom-width" id="helper-modal" tabindex="-1">
+                <div class="modal-dialog" style="width:50%;">
+                    <div class="modal-body">
+                        <object data="~/UploadedFiles/Helper.pdf" type="application/pdf" width="100%" height="500px"></object>
+                    </div>
+                </div>
+            </div>
+            @*<footer class="main" style="text-align:center">
+            &copy; 2018 <strong>Azərbaycan Dəmir Yolları Məlumat Hesablama Mərkəzi</strong>
+        </footer>*@
+        </div>
+        
+    </div>
+
+    
+    <script src="~/Scripts/theme/bootstrap.min.js"></script>
+    <script src="~/Scripts/theme/joinable.js"></script>
+    <script src="~/Scripts/theme/resizeable.js"></script>
+    <script src="~/Scripts/theme/neon-api.js"></script>
+    <script src="~/Scripts/theme/neon-custom.js"></script>
+    <script src="~/Scripts/theme/neon-demo.js"></script>
+    <script src="~/Scripts/theme/toastr.js"></script>
+    <script src="~/Scripts/theme/TweenMax.min.js"></script>
+    <script src="~/Scripts/theme/jquery.cookie.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <script src="~/Scripts/custom/common.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+﻿.center {
+    margin: auto;
+    width: 50%;
+    border: 0;
+    padding: 10px;
+}
+
+.table-container .panel .table > thead > tr > th:last-child,
+.table-container .panel .table > tbody > tr > td:last-child {
+    text-align: center;
+}
+
+.panel-heading {
+    padding: 5px 15px;
+}
+
+    .panel-heading > .panel-title {
+        padding: 0 !important;
+    }
+
+.myTable {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-style: dotted;
+    border-right-style: dotted;
+    border-bottom-style: dotted;
+    border-left-style: dotted;
+    border-top-color: #CCCCCC;
+    border-right-color: #CCCCCC;
+    border-bottom-color: #CCCCCC;
+    border-left-color: #CCCCCC;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.textInputSearch {
+    width: 100%;
+}
+
+.divScroll-alpiFrameworkTypes {
+    height: 150px;
+    width: 100%;
+    overflow: auto;
+    border: 1px;
+}
+
+.divScroll-tesnifat {
+    height: 150px;
+    width: 100%;
+    overflow: auto;
+}
+
+.divScroll-institution {
+    height: 100px;
+    width: 100%;
+    overflow: auto;
+}
+
+.page-container .main-content {
+    padding-top: 0;
+}
+
+table {
+    font-size: 12px !important;
+}
+
+#alpiFrameworkSearchOrderDesc, #alpiFrameworkExactSame {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+#panel-container {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.row {
+    padding: 0;
+}
+
+input[type="date"] {
+    width: 145px;
+    margin-bottom: 5px;
+}
+
+.textInputSearch {
+    margin-bottom: 5px;
+}
+/*~~~Loader~~~*/
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 90px;
+    height: 90px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,372 @@
+﻿body {
+    position: relative;
+}
+
+    body.loaded {
+        -webkit-perspective: none;
+        -moz-perspective: none;
+        perspective: none;
+    }
+
+textarea {
+    resize: none;
+}
+/*Styles for modal*/
+body.modal-open {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+/* Styles for validation helpers */
+.field-validation-error {
+    color: #f00;
+    font-size: 11px;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00 !important;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+#adminAccess {
+    font-size: 20px;
+    color: chartreuse;
+}
+
+/* Styles for popover */
+.popover {
+    background: #f0f0f1;
+    border: 1px solid #ebebeb;
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.20);
+    font-size: 12px;
+    width: 600px;
+}
+
+    /*.popover.arrow {
+        display:none;
+    }*/
+    .popover.right .arrow:after {
+        border-right-color: #f0f0f1 !important;
+    }
+/*Styles for panel */
+/*.table-container .panel .table > thead > tr > th {
+    background: lightblue !important;
+}*/
+.panel .panel-heading {
+    border: none !important;
+    background-color: #386fa7;
+    color: white;
+}
+
+    .panel .panel-heading > .panel-title {
+        padding: 15px 20px;
+        font-weight: bold;
+    }
+
+    .panel .panel-heading > .panel-options {
+        padding-right: 20px;
+    }
+
+        .panel .panel-heading > .panel-options a {
+            margin-top: 15px;
+        }
+
+.table-container .panel {
+    border: none !important;
+}
+
+    .table-container .panel .panel-body {
+        padding: 0px !important;
+    }
+
+    .table-container .panel .dataTables_wrapper .ui-toolbar {
+        padding: 0;
+        background: none;
+        border: none !important;
+    }
+
+    .table-container .panel .dataTables_wrapper .dataTables_length,
+    .table-container .panel .dataTables_wrapper .dataTables_filter {
+        border: none !important;
+        border-radius: 0px !important;
+        height: 50px;
+        color: black !important;
+    }
+
+    .table-container .panel .dataTables_wrapper .dataTables_length {
+        /*border-left: 1px solid #ebebeb !important;*/
+        padding: 16px 20px;
+    }
+
+        .table-container .panel .dataTables_wrapper .dataTables_length label {
+            margin: 0px;
+        }
+
+    .table-container .panel .dataTables_wrapper .dataTables_filter {
+        /*border-right: 1px solid #ebebeb !important;*/
+        padding: 10px 20px;
+    }
+
+        .table-container .panel .dataTables_wrapper .dataTables_filter label {
+            margin: 0px;
+        }
+
+            .table-container .panel .dataTables_wrapper .dataTables_filter label input {
+                height: 30px;
+                margin: 0px;
+            }
+
+    .table-container .panel .dataTables_wrapper .dataTables_info,
+    .table-container .panel .dataTables_wrapper .dataTables_paginate {
+        border: none !important;
+        border-radius: 0px !important;
+        background: transparent !important;
+        height: 50px;
+        color: black !important;
+    }
+
+    .table-container .panel .dataTables_wrapper .dataTables_info,
+    .table-container .panel .dataTables_wrapper .dataTables_paginate {
+        padding: 10px 0px;
+    }
+
+    .table-container .panel .dataTables_wrapper .dataTables_paginate {
+        margin: 0px;
+    }
+
+        .table-container .panel .dataTables_wrapper .dataTables_paginate .fg-button {
+            background: #f0f0f1 !important;
+            border: none !important;
+            margin: 0px;
+            font-weight: normal;
+            font-size: 12px;
+            border-radius: 0px;
+            padding: 8px 10px;
+        }
+
+        .table-container .panel .dataTables_wrapper .dataTables_paginate > .fg-button:first-child {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-right: 1px solid #ebebeb !important;
+        }
+
+        .table-container .panel .dataTables_wrapper .dataTables_paginate > .fg-button:last-child {
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+            border-left: 1px solid #ebebeb !important;
+        }
+
+        .table-container .panel .dataTables_wrapper .dataTables_paginate .fg-button.ui-state-disabled {
+            opacity: unset !important;
+            cursor: not-allowed !important;
+        }
+
+        .table-container .panel .dataTables_wrapper .dataTables_paginate span .fg-button.ui-state-disabled {
+            cursor: default !important;
+            color: red !important;
+        }
+
+    .table-container .panel table.dataTable {
+        border: none !important;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    .table-container .panel .table > thead > tr > th {
+        background: #f0f0f1;
+        font-weight: bold;
+    }
+
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td {
+    padding: 8px;
+    color: black;
+    border: 1px solid #ebebeb !important;
+}
+
+.page-container .sidebar-menu #main-menu li.active > a {
+    background-color: #2b303a;
+    color: #fff;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+
+.page-container .sidebar-menu .logo-env > div.sidebar-collapse a,
+.page-container .sidebar-menu .logo-env > div.sidebar-mobile-menu a {
+    border: 1px solid white;
+}
+
+.page-container .sidebar-menu .logo-env > div > a {
+    color: #013C88;
+}
+
+.page-container .sidebar-menu #main-menu li a {
+    color: white;
+    background-color: #003367;
+}
+
+.page-container .sidebar-menu {
+    background-color: white;
+}
+/*.page-container .sidebar-menu #main-menu li {
+        border: 0px solid white;
+        border-left:none;
+        border-right:none;
+    }*/
+
+.page-container.sidebar-collapsed .sidebar-menu #main-menu > li > a > span:not(.badge) {
+    background-color: #013C88;
+    border: none;
+}
+
+.page-container.sidebar-collapsed .sidebar-menu.panel-heading {
+    padding: 0;
+}
+
+.page-container .sidebar-menu #main-menu li ul > li > a {
+    background-color: #376ea6;
+    border: 0;
+    border-radius: 0;
+}
+
+    .page-container .sidebar-menu #main-menu li ul > li > a:hover {
+        background-color: lightblue;
+        border-top: 0;
+    }
+
+.page-container .sidebar-menu #main-menu li ul {
+    border-top: 0;
+}
+
+    .page-container .sidebar-menu #main-menu li ul > li {
+        border-bottom-color: #003a74;
+    }
+
+.page-container .sidebar-menu #main-menu li a:hover {
+    background-color: #003a74;
+}
+
+.page-container .sidebar-menu #main-menu li a {
+    border-radius: 5px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.page-container.sidebar-collapsed .sidebar-menu #main-menu > li.has-sub > a {
+    background-color: #003a74;
+}
+
+.page-container.sidebar-collapsed .sidebar-menu #main-menu > li.has-sub:hover.has-sub > a:hover,
+.page-container.sidebar-collapsed .sidebar-menu #main-menu > li:hover.has-sub > a:hover {
+    color: white;
+    border: 0;
+    border-radius: 5px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.page-container.sidebar-collapsed .sidebar-menu #main-menu > li.has-sub:hover.has-sub > a > span:not(.badge),
+.page-container.sidebar-collapsed .sidebar-menu #main-menu > li:hover.has-sub > a > span:not(.badge) {
+    border: 0;
+    border-radius: 5px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+/*Styles for layout*/
+#layout-header {
+    background-color: #b7b7b7;
+    height: 40px;
+    margin: 20px;
+    border-radius: 3px;
+}
+
+.notifications.dropdown > a i {
+    color: black;
+}
+
+.profile-info.dropdown > a {
+    margin-top: 5px;
+    color: black;
+}
+
+.list-inline > li:first-child {
+    color: black;
+}
+
+.list-inline > li > a {
+    color: black;
+}
+
+.page-container .main-content {
+    background-color: #d0d0d0;
+}
+/*Styles for Log*/
+/*.table-container .panel .dataTables_wrapper .dataTables_info{
+    background-color:blue !important;
+}*/
+.table-container .panel .dataTables_wrapper .dataTables_info {
+    margin-top: 10px;
+    margin-left: 5px;
+    padding: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 30px;
+    background-color: #d0d0d0 !important;
+    border-radius: 3px !important;
+}
+
+.table-container .panel .dataTables_wrapper .dataTables_paginate .fg-button {
+    background-color: #d0d0d0 !important;
+}
+
+.table-container .panel .dataTables_wrapper .dataTables_paginate {
+    padding-right: 5px !important;
+}
+
+.page-footer {
+    background-color: #949494;
+    border-radius: 3px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+}
+
+.footer-content {
+    padding-top: 10px;
+    padding-bottom: 15px;
+    color: black !important;
+    font-size: medium !important;
+    font-weight: bold !important;
+}
+
+/*.ui-state-default .ui-icon {
+    background-image: url('../../../images/icons8-sort-50.png') !important;
+}
+.ui-icon, .ui-widget-content .ui-icon{
+    background-image:none;
+}*/
